@@ -57,7 +57,7 @@ const cloudinaryStorage: multer.StorageEngine = {
 };
 
 const app = express();
-const PORT = 5003;
+const PORT = process.env.PORT || 5003;
 
 app.use(cors());
 const upload = multer({ storage: cloudinaryStorage });
