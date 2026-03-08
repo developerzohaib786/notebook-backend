@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts",
+  "exec": "concurrently \"tsx ./src/index.ts\" \"tsx ./src/worker.ts\""
+}
