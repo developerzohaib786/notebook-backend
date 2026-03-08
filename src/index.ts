@@ -83,11 +83,11 @@ app.post("/upload/", upload.single('file'), async (req, res) => {
         data: { userId, pdfUrl, originalName: req.file.originalname },
     });
 
-    await queue.add('file-processing', JSON.stringify({
+    await queue.add('file-processing', {
         filePath: pdfUrl,
         originalName: req.file.originalname,
         userId,
-    }));
+    });
 
     res.json({ message: `File ${req.file.originalname} uploaded successfully.`, pdfUrl });
 });

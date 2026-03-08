@@ -10,7 +10,7 @@ import { QdrantVectorStore } from "@langchain/qdrant";
 
 const worker = new Worker('file-processing', async job => {
     try {
-        const data = JSON.parse(job.data);
+        const data = typeof job.data === "string" ? JSON.parse(job.data) : job.data;
         const userId = data.userId as string | undefined;
 
         if (!userId) {
@@ -43,10 +43,11 @@ const worker = new Worker('file-processing', async job => {
 
         const vectorStore = await QdrantVectorStore.fromDocuments(chunks, embeddings, {
             url: process.env.QDRANT_URL as string,
+            apiKey: process.env.QDRANT_API_KEY as string,
             collectionName,
         });
 
-        console.log(`Successfully stored ${chunks.length} chunks to Qdrant collection.`);
+        console.log(`Successfully stored ${chunks.length} chunks to Qdrant collection ${collectionName}.`);
     } catch (error) {
         console.error("Error processing file:", error);
         throw error;
@@ -57,4 +58,16 @@ const worker = new Worker('file-processing', async job => {
         tls: {},
         maxRetriesPerRequest: null,
     }
-}); 
+});
+
+worker.on("ready", () => {
+    console.log("BullMQ worker is ready and listening for file-processing jobs.");
+});
+
+worker.on("completed", (job) => {
+    console.log(`Job ${job.id} completed.`);
+});
+
+worker.on("failed", (job, err) => {
+    console.error(`Job ${job?.id} failed:`, err);
+});
