@@ -142,7 +142,11 @@ app.get('/chat', async (req, res) => {
 
         // Prepare context for LLM
         const context = JSON.stringify(contextResults);
-        const prompt = `You are a helpful AI assistant. Answer the user's question in Markdown format with proper and well formatted content like heading and paragraph should not be on same line and other such best practices of content and for heading write heading, sub-heading and paragraph in this way # heading, ## sub-heading, ### paragraph respectively.  Answer based only on the following context from PDF files. If context is not available then answer based on your knowledge.\nContext: ${context}.  `;
+        const prompt = `You are a helpful AI assistant. Answer the user's question in Markdown format with proper and well formatted content like heading and paragraph should not be on same line and other such best practices of content. For headings, use: # heading, ## sub-heading, ### paragraph respectively.
+
+If the context below contains relevant information from PDF files, use it to answer the question. If the context is empty or not relevant, answer based on your general knowledge and briefly mention that no relevant information was found in the uploaded documents.
+
+Context: ${context}`;
 
         // Use Cohere LLM (CohereClientV2 messages format)
         const response = await client.chat({
