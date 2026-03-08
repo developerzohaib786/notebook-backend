@@ -45,7 +45,10 @@
     "express": "^5.2.1",
     "langchain": "^1.2.17",
     "multer": "^2.0.2",
-    "pdf-parse": "^2.4.5",
+    "pdf-parse": "1.1.4",
     "pg": "^8.20.0"
+  },
+  "overrides": {
+    "pdf-parse": "1.1.4"
   }
 }
