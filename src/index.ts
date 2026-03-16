@@ -64,7 +64,7 @@ const upload = multer({ storage: cloudinaryStorage });
 
 
 app.get("/", (req, res) => {
-    res.send("Hello from RAG Vector DB Microservice!");
+    res.send("Hello from RAG Vector DB Microservice updated!");
 });
 
 app.post("/upload/", upload.single('file'), async (req, res) => {
